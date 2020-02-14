@@ -1,0 +1,18 @@
+{
+    "oEditBlock": "block",
+    "oEditMiniBlock": "miniblock",
+    "oPlatform": "platform",
+    "oPlayerStart": "playerStart",
+    "oSpikeUp": "spikeUp",
+    "oSpikeRight": "spikeRight",
+    "oSpikeLeft": "spikeLeft",
+    "oSpikeDown": "spikeDown",
+    "oMiniSpikeUp": "minispikeUp",
+    "oMiniSpikeRight": "minispikeRight",
+    "oMiniSpikeLeft": "minispikeLeft",
+    "oMiniSpikeDown": "minispikeDown",
+    "oWater": "objwater",
+    "oWater2": "objwater2",
+    "oWater3": "objwater",
+    "oSave": "savePoint",
+}

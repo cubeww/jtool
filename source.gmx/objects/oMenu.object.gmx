@@ -292,6 +292,13 @@ if (cur_section == sec)
     {
         saveGMS2Map();
     }
+    
+    // export IWM
+    yy += dy;
+    if (menuButton(xx, yy, w, h, 'Export IWM Map', buttons_enabled, false))
+    {
+        saveIWMMap();
+    }
 }
 
 // section: Map

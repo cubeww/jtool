@@ -1,0 +1,20 @@
+{
+    "oEditBlock": "block",
+    "oEditMiniBlock": "blockMini",
+    "oPlatform": "movingPlatform",
+    "oPlayerStart": "playerStart",
+    "oSpikeUp": "spikeUp",
+    "oSpikeRight": "spikeRight",
+    "oSpikeLeft": "spikeLeft",
+    "oSpikeDown": "spikeDown",
+    "oApple": "cherry",
+    "oWater": "water",
+    "oWater2": "water",
+    "oWater3": "water",
+    "oWalljumpL": "IvyL",
+    "oWalljumpR": "IvyR",
+    "oSave": "savePoint",
+    "oWarp": "warp",
+    "oGravityArrowUp": "gravUp",
+    "oGravityArrowDown": "gravDown"
+}

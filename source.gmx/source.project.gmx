@@ -294,6 +294,7 @@
         <scripts name="gms2">
           <script>scripts\saveGMS2Map.gml</script>
           <script>scripts\gms2Template.gml</script>
+          <script>scripts\uuid_generate.gml</script>
         </scripts>
         <scripts name="gms1">
           <script>scripts\saveGMS1Map.gml</script>
@@ -305,6 +306,9 @@
         </scripts>
         <script>scripts\randomInstanceID.gml</script>
         <script>scripts\file_text_read_string_all.gml</script>
+      </scripts>
+      <scripts name="iwm">
+        <script>scripts\saveIWMMap.gml</script>
       </scripts>
     </scripts>
     <scripts name="misc">
@@ -523,7 +527,6 @@
       <script>scripts\_jso_is_whitespace_char.gml</script>
       <script>scripts\_jso_hex_to_decimal.gml</script>
     </scripts>
-    <script>scripts\uuid_generate.gml</script>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\shdSingleColor.shader</shader>
