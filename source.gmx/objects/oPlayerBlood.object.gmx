@@ -25,14 +25,15 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_index = choose(0,1,2)
-image_speed = 0
-gravity = (0.1+random(0.2)) * global.grav
-direction = random(360)//irandom(35)*10
-speed = random(6)
+            <string>image_index = choose(0, 1, 2);
+image_speed = 0;
+gravity = (0.1 + random(0.2)) * global.grav;
+direction = random(360); // irandom(35)*10 
+speed = random(6);
 
-image_xscale=1.5
-image_yscale=image_xscale
+image_xscale = 1.5;
+image_yscale = image_xscale;
+
 </string>
           </argument>
         </arguments>
@@ -55,9 +56,11 @@ image_yscale=image_xscale
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if x &lt; -20 or x &gt; 820 or y &gt; 1000 {
-    instance_destroy()
+            <string>if (x &lt; -20 || x &gt; 820 || y &gt; 1000)
+{
+    instance_destroy();
 }
+
 </string>
           </argument>
         </arguments>
@@ -80,9 +83,10 @@ image_yscale=image_xscale
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>move_contact_solid(direction, speed)
-speed = 0
-gravity = 0
+            <string>move_contact_solid(direction, speed);
+speed = 0;
+gravity = 0;
+
 </string>
           </argument>
         </arguments>

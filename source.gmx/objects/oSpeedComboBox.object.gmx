@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>selected = false
+            <string>selected = false;
 </string>
           </argument>
         </arguments>
@@ -48,57 +48,62 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var w = 112
-var h = 32
-var droph = 75
+            <string>var w = 112;
+var h = 32;
+var droph = 75;
+comboBoxButton(x, y, w, h, droph, 'Speed: ' + string(room_speed), sMenuSpeed);
 
-comboBoxButton(x,y,w,h,droph,'Speed: '+string(room_speed),sMenuSpeed)
-
-if selected {
-    drawButton(x,y+h-1,w,droph,false)
-    draw_set_color(global.color_button)
-    draw_line(x,y+h-1,x+w-2,y+h-1)
+if (selected)
+{
+    drawButton(x, y + h - 1, w, droph, false);
+    draw_set_color(global.color_button);
+    draw_line(x, y + h - 1, x + w - 2, y + h - 1);
 }
 
-var bx = x
-var by = y+h-1
-var bw = 38
-var bh = 38
-var dx = 37
-
-if selected and menuButton(bx,by,bw,bh,'50',true,false) {
-    room_speed = 50
-    selected = false
-    global.comboboxselected = false
+var bx = x;
+var by = y + h - 1;
+var bw = 38;
+var bh = 38;
+var dx = 37;
+if (selected &amp;&amp; menuButton(bx, by, bw, bh, '50', true, false))
+{
+    room_speed = 50;
+    selected = false;
+    global.comboboxselected = false;
 }
 
-bx += dx
-if selected and menuButton(bx,by,bw,bh,'25',true,false) {
-    room_speed = 25
-    selected = false
-    global.comboboxselected = false
+bx += dx;
+if (selected &amp;&amp; menuButton(bx, by, bw, bh, '25', true, false))
+{
+    room_speed = 25;
+    selected = false;
+    global.comboboxselected = false;
 }
 
-bx += dx
-if selected and menuButton(bx,by,bw,bh,'10',true,false) {
-    room_speed = 10
-    selected = false
-    global.comboboxselected = false
+bx += dx;
+if (selected &amp;&amp; menuButton(bx, by, bw, bh, '10', true, false))
+{
+    room_speed = 10;
+    selected = false;
+    global.comboboxselected = false;
 }
 
-by += dx
-bx -= dx*2
-if selected and menuButton(bx,by,bw,bh,'100',true,false) {
-    room_speed = 100
-    selected = false
-    global.comboboxselected = false
+by += dx;
+bx -= dx * 2;
+if (selected &amp;&amp; menuButton(bx, by, bw, bh, '100', true, false))
+{
+    room_speed = 100;
+    selected = false;
+    global.comboboxselected = false;
 }
 
-bx += dx
-if (selected and menuButton(bx,by,bw*2-1,bh,'other (F)',true,false))
-or (keyboard_check_pressed(ord('F')) and global.state != globalstate_input) {
-    inputOverlay(input_textbox,inputCallback_SpeedCustom,'Room speed (was '+string(room_speed)+')')
+bx += dx;
+if ((selected &amp;&amp; menuButton(bx, by, bw * 2 - 1, bh, 'other (F)', true, false))
+    || (keyboard_check_pressed(ord('F')) &amp;&amp; global.state != globalstate_input))
+{
+    inputOverlay(input_textbox, inputCallback_SpeedCustom, 'Room speed (was ' + string(room_speed) + ')');
 }
+
 </string>
           </argument>
         </arguments>

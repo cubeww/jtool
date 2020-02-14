@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>alarm[0] = 40
+            <string>alarm[0] = 40;
 </string>
           </argument>
         </arguments>
@@ -71,7 +71,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if x &lt; 0 or x &gt; 800 instance_destroy()
+            <string>if (x &lt; 0 || x &gt; 800)
+    instance_destroy();
+
 </string>
           </argument>
         </arguments>
@@ -95,6 +97,7 @@
           <argument>
             <kind>1</kind>
             <string>instance_destroy();
+
 </string>
           </argument>
         </arguments>

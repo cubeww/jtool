@@ -25,10 +25,10 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>yspeed = 0
-bounce = false
+            <string>yspeed = 0;
+bounce = false;
 
-codable_create()
+codable_create();
 </string>
           </argument>
         </arguments>
@@ -51,51 +51,65 @@ codable_create()
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if hspeed != 0 or vspeed != 0 or yspeed != 0 {
-
-    if bounce {
-        if not place_free(x+hspeed,y) {
-            hspeed = -hspeed
+            <string>if (hspeed != 0 || vspeed != 0 || yspeed != 0)
+{
+    if (bounce)
+    {
+        if (!place_free(x + hspeed, y))
+        {
+            hspeed = -hspeed;
         }
         
-        if not place_free(x,y+vspeed+yspeed)  {
-            if vspeed != 0 {
-                yspeed = -vspeed
-                vspeed = 0
+        if (!place_free(x, y + vspeed + yspeed))
+        {
+            if (vspeed != 0)
+            {
+                yspeed = -vspeed;
+                vspeed = 0;
             }
-            else {
-                vspeed = -yspeed
-                yspeed = 0
+            else
+            {
+                vspeed = -yspeed;
+                yspeed = 0;
             }
         }
     }
     
-    y += yspeed
+    y += yspeed;
     
-    if global.grav == 1 {
-        with instance_place(x,y-2,oPlayer) {
-            y += other.vspeed + other.yspeed
-            if place_free(x+other.hspeed,y) x += other.hspeed
+    if (global.grav == 1)
+    {
+        with (instance_place(x, y - 2, oPlayer))
+        {
+            y += other.vspeed + other.yspeed;
+            if (place_free(x + other.hspeed, y))
+                x += other.hspeed;
         }
     }
-    else {
-        with instance_place(x,y+2,oPlayer) {
-            y += other.vspeed + other.yspeed
-            if place_free(x+other.hspeed,y) x += other.hspeed
+    else
+    {
+        with (instance_place(x, y + 2, oPlayer))
+        {
+            y += other.vspeed + other.yspeed;
+            if (place_free(x + other.hspeed, y))
+                x += other.hspeed;
         }
     }
     
-    if vspeed &lt; 0 {
-        yspeed = vspeed
-        vspeed = 0
+    if (vspeed &lt; 0)
+    {
+        yspeed = vspeed;
+        vspeed = 0;
     }
-    if yspeed &gt; 0 {
-        vspeed = yspeed
-        yspeed = 0
+    if (yspeed &gt; 0)
+    {
+        vspeed = yspeed;
+        yspeed = 0;
     }
 }
 
-codable_step()
+codable_step();
+
 </string>
           </argument>
         </arguments>
@@ -118,7 +132,7 @@ codable_step()
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>codable_draw(true)
+            <string>codable_draw(true);
 </string>
           </argument>
         </arguments>

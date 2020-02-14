@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>cancelHints_Create()
+            <string>cancelHints_Create();
 </string>
           </argument>
         </arguments>
@@ -48,7 +48,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>cancelHints_EndStep()
+            <string>cancelHints_EndStep();
 </string>
           </argument>
         </arguments>
@@ -71,10 +71,12 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if global.showanalysis and not global.hidesidebar {
-    drawButton(x,y,96,64,false)
-    drawHint(x,y,96,'Cancel',jc_duration,jc_show)
+            <string>if (global.showanalysis &amp;&amp; !global.hidesidebar)
+{
+    drawButton(x, y, 96, 64, false);
+    drawHint(x, y, 96, 'Cancel', jc_duration, jc_show);
 }
+
 </string>
           </argument>
         </arguments>

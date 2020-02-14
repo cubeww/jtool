@@ -25,8 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>global.PlayerFrameCounter = 0
-global.SavedPlayerFrameCounter = 0
+            <string>global.PlayerFrameCounter = 0;
+global.SavedPlayerFrameCounter = 0;
+
 </string>
           </argument>
         </arguments>
@@ -49,15 +50,19 @@ global.SavedPlayerFrameCounter = 0
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if not global.showanalysis exit
+            <string>if (!global.showanalysis)
+    exit;
 
-var w = 96
-var h = 32
-drawButton(x,y,w,h,false)
-fontSetup(font_small, c_black, fa_left, fa_center, 1)
-draw_text(x+12, y+16, 'FPS: '+string(fps))
-if global.FrameCounterOn = true or global.record == 1 or global.record == 2 {
-draw_text(x+70, y+16, string(global.PlayerFrameCounter)) }
+var w = 96;
+var h = 32;
+drawButton(x, y, w, h, false);
+fontSetup(font_small, c_black, fa_left, fa_center, 1);
+draw_text(x + 12, y + 16, 'FPS: ' + string(fps));
+if (global.FrameCounterOn == true || global.record == 1 || global.record == 2)
+{
+    draw_text(x + 70, y + 16, string(global.PlayerFrameCounter));
+}
+
 </string>
           </argument>
         </arguments>

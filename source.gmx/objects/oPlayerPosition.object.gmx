@@ -27,10 +27,11 @@
             <kind>1</kind>
             <string>/// Draws the player's position stuff.
 
-global.RecordPlayerPosition = false
-xpos = 0
-ypos = 0
-align = 0
+global.RecordPlayerPosition = false;
+xpos = 0;
+ypos = 0;
+align = 0;
+
 </string>
           </argument>
         </arguments>
@@ -53,69 +54,83 @@ align = 0
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if not global.showanalysis exit
+            <string>if (!global.showanalysis)
+    exit;
 
-var w = 136
-if global.playery_extended w = 240
-drawButton(x,y,w,80,false)
-fontSetup(font_small,c_black,fa_left,fa_top,1)
-if (instance_exists(oRecordPlayer) or instance_exists(oRecordPlayerCopy)) and global.RecordPlayerPosition = true {
- if instance_exists(oRecordPlayer) {
- align = oRecordPlayer.x mod 3
-    ypos = oRecordPlayer.y
-    xpos = oRecordPlayer.x }
-if instance_exists(oRecordPlayerCopy) {
- align = oRecordPlayerCopy.x mod 3
-    ypos = oRecordPlayerCopy.y
-    xpos = oRecordPlayerCopy.x }
-   } 
-else if instance_exists(oPlayer) {
-    align = oPlayer.x mod 3
-    ypos = oPlayer.y
-    xpos = oPlayer.x
+var w = 136;
+if (global.playery_extended)
+    w = 240;
+drawButton(x, y, w, 80, false);
+fontSetup(font_small, c_black, fa_left, fa_top, 1);
+if ((instance_exists(oRecordPlayer) || instance_exists(oRecordPlayerCopy)) &amp;&amp; global.RecordPlayerPosition == true)
+{
+    if (instance_exists(oRecordPlayer))
+    {
+        align = oRecordPlayer.x mod 3;
+        ypos = oRecordPlayer.y;
+        xpos = oRecordPlayer.x;
+    }
+    if (instance_exists(oRecordPlayerCopy))
+    {
+        align = oRecordPlayerCopy.x mod 3;
+        ypos = oRecordPlayerCopy.y;
+        xpos = oRecordPlayerCopy.x;
+    }
 }
-
-var yy = y+5
-var dy = 20
-var xx = x+7
-if (instance_exists(oRecordPlayer) or instance_exists(oRecordPlayerCopy)) and global.RecordPlayerPosition = true {
-draw_text(xx,yy+5,'R Align    '+string(align))
-yy += dy
-draw_text(xx,yy+5,'R X pos   '+string(xpos))
-yy += dy
-var ystr = string(ypos)
-if global.playery_extended ystr = string_format(ypos,3,16)
-draw_text(xx,yy+5,'R Y pos   '+ystr)
-}
-else {
-draw_text(xx,yy+5,'Align    '+string(align))
-yy += dy
-draw_text(xx,yy+5,'X pos   '+string(xpos))
-yy += dy
-var ystr = string(ypos)
-if global.playery_extended ystr = string_format(ypos,3,16)
-draw_text(xx,yy+5,'Y pos   '+ystr)
+else if (instance_exists(oPlayer))
+{
+    align = oPlayer.x mod 3;
+    ypos = oPlayer.y;
+    xpos = oPlayer.x;
 }
 
-var buttons_active = global.state == globalstate_idle and not global.comboboxselected
-var buttonw = 24
-var buttonh = 12
-var buttonx = x+136-buttonw
-var buttony = y
-if menuButton(buttonx,buttony,buttonw,buttonh,'',buttons_active,false) {
-    global.playery_extended = not global.playery_extended
-    saveConfig()
+var yy = y + 5;
+var dy = 20;
+var xx = x + 7;
+if ((instance_exists(oRecordPlayer) || instance_exists(oRecordPlayerCopy)) &amp;&amp; global.RecordPlayerPosition == true)
+{
+    draw_text(xx, yy + 5, 'R Align    ' + string(align));
+    yy += dy;
+    draw_text(xx, yy + 5, 'R X pos   ' + string(xpos));
+    yy += dy;
+    var ystr = string(ypos);
+    if (global.playery_extended)
+        ystr = string_format(ypos, 3, 16);
+    draw_text(xx, yy + 5, 'R Y pos   ' + ystr);
 }
-if menuButton(x,buttony,buttonw,buttonh,'',buttons_active,false)
-{  global.RecordPlayerPosition = not global.RecordPlayerPosition
+else
+{
+    draw_text(xx, yy + 5, 'Align    ' + string(align));
+    yy += dy;
+    draw_text(xx, yy + 5, 'X pos   ' + string(xpos));
+    yy += dy;
+    var ystr = string(ypos);
+    if (global.playery_extended)
+        ystr = string_format(ypos, 3, 16);
+    draw_text(xx, yy + 5, 'Y pos   ' + ystr);
 }
-fontSetup(font_small,c_black,fa_center,fa_center,1)
-draw_text(buttonx+buttonw/2,buttony+buttonh/2-5,'. . .')
-draw_text(buttonx+buttonw/2-1,buttony+buttonh/2-5,'. . .')
-draw_text(x+buttonw/2,buttony+buttonh/2-5,'. . .')
-draw_text(x+buttonw/2-1,buttony+buttonh/2-5,'. . .')
 
-/*if global.playery_extended {
+var buttons_active = global.state == globalstate_idle &amp;&amp; !global.comboboxselected;
+var buttonw = 24;
+var buttonh = 12;
+var buttonx = x + 136 - buttonw;
+var buttony = y;
+if (menuButton(buttonx, buttony, buttonw, buttonh, '', buttons_active, false))
+{
+    global.playery_extended = !global.playery_extended;
+    saveConfig();
+}
+if (menuButton(x, buttony, buttonw, buttonh, '', buttons_active, false))
+{
+    global.RecordPlayerPosition = !global.RecordPlayerPosition;
+}
+fontSetup(font_small, c_black, fa_center, fa_center, 1);
+draw_text(buttonx + buttonw / 2, buttony + buttonh / 2 - 5, '. . .');
+draw_text(buttonx + buttonw / 2 - 1, buttony + buttonh / 2 - 5, '. . .');
+draw_text(x + buttonw / 2, buttony + buttonh / 2 - 5, '. . .');
+draw_text(x + buttonw / 2 - 1, buttony + buttonh / 2 - 5, '. . .');
+
+/* if global.playery_extended {
     var bx = x+140
     var by = y+22
     var bw = 32
@@ -126,7 +141,8 @@ draw_text(x+buttonw/2-1,buttony+buttonh/2-5,'. . .')
     if menuButton(bx+bw+8,by,bw,bh,'+ .5',-100,buttons_active,false) {
         nudgePlayerHalf(1)
     }
-}*/
+}*/ 
+
 </string>
           </argument>
         </arguments>

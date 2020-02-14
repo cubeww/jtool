@@ -25,8 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>highlight_count = 1000
-chosen = false
+            <string>highlight_count = 1000;
+chosen = false;
+
 </string>
           </argument>
         </arguments>
@@ -49,18 +50,22 @@ chosen = false
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>highlight_count = 0
-if global.deathEnabled {
-    chosen = true
-    with oRecordPlayerCopy {
-        var inst = instance_create(x,y,oPlayerVictory);
-        inst.sprite_index = sprite_index
-        if global.dotkid inst.sprite_index = sDotkid
-        inst.image_speed = image_speed
-        inst.image_xscale = global.player_xscale
-        instance_destroy()
+            <string>highlight_count = 0;
+if (global.deathEnabled)
+{
+    chosen = true;
+    with (oRecordPlayerCopy)
+    {
+        var inst = instance_create(x, y, oPlayerVictory);
+        inst.sprite_index = sprite_index;
+        if (global.dotkid)
+            inst.sprite_index = sDotkid;
+        inst.image_speed = image_speed;
+        inst.image_xscale = global.player_xscale;
+        instance_destroy();
     }
 }
+
 </string>
           </argument>
         </arguments>
@@ -83,24 +88,29 @@ if global.deathEnabled {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>highlight_count = 0
-if /*global.deathEnabled*/ true {
-    chosen = true
-    with oRecordPlayer {         
-        var inst = instance_create(x,y,oPlayerVictory);
-        inst.sprite_index = sprite_index
-        if global.dotkid inst.sprite_index = sDotkid
-        inst.image_speed = image_speed
-        inst.image_xscale = global.recordXscale
-        oRecordPlayer.vspeed=-gravity
-       //oRecordPlayer.vspeed=0
+            <string>highlight_count = 0;
+if /* global.deathEnabled */ (true)
+{
+    chosen = true;
+    with (oRecordPlayer)
+    {
+        var inst = instance_create(x, y, oPlayerVictory);
+        inst.sprite_index = sprite_index;
+        if (global.dotkid)
+            inst.sprite_index = sDotkid;
+        inst.image_speed = image_speed;
+        inst.image_xscale = global.recordXscale;
+        oRecordPlayer.vspeed = -gravity;
         
-        //instance_destroy()
+        // oRecordPlayer.vspeed=0
+        
+        // instance_destroy()
         
         
-        //oRecordPlayer.image_speed=0
+        // oRecordPlayer.image_speed=0
     }
 }
+
 </string>
           </argument>
         </arguments>
@@ -123,18 +133,22 @@ if /*global.deathEnabled*/ true {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>highlight_count = 0
-if global.deathEnabled {
-    chosen = true
-    with oPlayerCopy {
-        var inst = instance_create(x,y,oPlayerVictory);
-        inst.sprite_index = sprite_index
-        if global.dotkid inst.sprite_index = sDotkid
-        inst.image_speed = image_speed
-        inst.image_xscale = global.player_xscale
-        instance_destroy()
+            <string>highlight_count = 0;
+if (global.deathEnabled)
+{
+    chosen = true;
+    with (oPlayerCopy)
+    {
+        var inst = instance_create(x, y, oPlayerVictory);
+        inst.sprite_index = sprite_index;
+        if (global.dotkid)
+            inst.sprite_index = sDotkid;
+        inst.image_speed = image_speed;
+        inst.image_xscale = global.player_xscale;
+        instance_destroy();
     }
 }
+
 </string>
           </argument>
         </arguments>
@@ -157,28 +171,37 @@ if global.deathEnabled {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>highlight_count = 0
-if global.deathEnabled or global.record==1{
-    chosen = true
-    with oPlayer {
-        var inst = instance_create(x,y,oPlayerVictory);
-        inst.sprite_index = sprite_index
-        if global.dotkid inst.sprite_index = sDotkid
-        inst.image_speed = image_speed
-        inst.image_xscale = global.player_xscale        
-        if global.record != 1{instance_destroy()}
-        else {oPlayer.vspeed=-gravity
-        global.pausedX = oPlayer.x
-        global.pausedY = oPlayer.y
-        global.pausedgrav = global.recordGrav
-        global.pausedplayer_xscale = global.player_xscale
-        global.pausedVspeed = oPlayer.vspeed 
-        global.pausedHspeed = oPlayer.hspeed 
-        global.pausedSprite = oPlayer.sprite_index
-        global.pausedDjump = oPlayer.djump
+            <string>highlight_count = 0;
+if (global.deathEnabled || global.record == 1)
+{
+    chosen = true;
+    with (oPlayer)
+    {
+        var inst = instance_create(x, y, oPlayerVictory);
+        inst.sprite_index = sprite_index;
+        if (global.dotkid)
+            inst.sprite_index = sDotkid;
+        inst.image_speed = image_speed;
+        inst.image_xscale = global.player_xscale;
+        if (global.record != 1)
+        {
+            instance_destroy();
+        }
+        else
+        {
+            oPlayer.vspeed = -gravity;
+            global.pausedX = oPlayer.x;
+            global.pausedY = oPlayer.y;
+            global.pausedgrav = global.recordGrav;
+            global.pausedplayer_xscale = global.player_xscale;
+            global.pausedVspeed = oPlayer.vspeed;
+            global.pausedHspeed = oPlayer.hspeed;
+            global.pausedSprite = oPlayer.sprite_index;
+            global.pausedDjump = oPlayer.djump;
         }
     }
 }
+
 </string>
           </argument>
         </arguments>
@@ -201,14 +224,17 @@ if global.deathEnabled or global.record==1{
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>highlight_count += 1
-if not instance_exists(oPlayerVictory) chosen = false
-if chosen highlight_count = 0
+            <string>highlight_count += 1;
+if (!instance_exists(oPlayerVictory))
+    chosen = false;
+if (chosen)
+    highlight_count = 0;
 
-var fraction = highlightGetFraction(highlight_count)
-draw_self()
-draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,
-global.color_warp,fraction)
+var fraction = highlightGetFraction(highlight_count);
+draw_self();
+draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle,
+    global.color_warp, fraction);
+
 </string>
           </argument>
         </arguments>

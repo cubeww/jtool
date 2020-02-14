@@ -2,9 +2,9 @@
 // Mainly used in oEdit to differentiate objects placed by the user
 // from other misc objects.
 
-var objectindex = argument0
-
-switch objectindex {
+var objectindex = argument0;
+switch (objectindex)
+{
     case oSpikeUp:
     case oSpikeRight:
     case oSpikeLeft:
@@ -33,6 +33,7 @@ switch objectindex {
     case oSaveFlip:
     case oTrg:
     case oMiniKillerBlock:
-    return true
+        return true;
 }
-return false
+return false;
+

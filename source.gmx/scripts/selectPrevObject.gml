@@ -1,4 +1,5 @@
-switch( selected_object ) {
+switch (selected_object)
+{
     // Spikes.
     case oSpikeLeft:
         selected_object = oSpikeDown;
@@ -34,7 +35,7 @@ switch( selected_object ) {
         selected_object = oMiniSpikeLeft;
         selected_sprite = sMiniSpikeLeft;
         break;
-        
+    
     // Blocks.
     case oEditBlock:
         selected_object = oEditMiniBlock;
@@ -48,7 +49,7 @@ switch( selected_object ) {
     case oWater:
         selected_object = oWater3;
         selected_sprite = sWater3;
-        break;        
+        break;
     case oWater2:
         selected_object = oWater;
         selected_sprite = sWater1;
@@ -67,7 +68,7 @@ switch( selected_object ) {
         selected_object = oWalljumpL;
         selected_sprite = sWalljumpL;
         break;
-        
+    
     // Saves.
     case oSave:
         selected_object = oBulletBlocker;
@@ -77,7 +78,7 @@ switch( selected_object ) {
         selected_object = oSave;
         selected_sprite = sSave;
         break;
-        
+    
     // Killers.
     case oApple:
         selected_object = oKillerBlock;
@@ -101,7 +102,7 @@ switch( selected_object ) {
         selected_object = oGravityArrowUp;
         selected_sprite = sGravityArrowUp;
         break;
-        
+    
     // Level start/end:
     case oPlayerStart:
         selected_object = oWarp;
@@ -111,7 +112,7 @@ switch( selected_object ) {
         selected_object = oPlayerStart;
         selected_sprite = sPlayerStart;
         break;
-    
     default:
         break;
 }
+

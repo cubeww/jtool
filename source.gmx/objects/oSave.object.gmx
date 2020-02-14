@@ -25,9 +25,10 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_speed=0
-can_save=true
-grav = 1
+            <string>image_speed = 0;
+can_save = true;
+grav = 1;
+
 </string>
           </argument>
         </arguments>
@@ -50,7 +51,8 @@ grav = 1
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_index=0
+            <string>image_index = 0;
+
 </string>
           </argument>
         </arguments>
@@ -73,7 +75,8 @@ grav = 1
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>can_save=true
+            <string>can_save = true;
+
 </string>
           </argument>
         </arguments>
@@ -96,19 +99,21 @@ grav = 1
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var shot = place_meeting(x,y,oPlayer) and keyboard_check_pressed(global.key_shoot)
-
-if global.savetype == savetype_shoot {
-    shot = shot or place_meeting(x,y,oPlayerBullet)
+            <string>var shot = place_meeting(x, y, oPlayer) &amp;&amp; keyboard_check_pressed(global.key_shoot);
+if (global.savetype == savetype_shoot)
+{
+    shot = shot || place_meeting(x, y, oPlayerBullet);
 }
 
-if shot and can_save and instance_exists(oPlayer) and grav == global.grav {
-    savePlayer()
-    can_save=false
-    alarm[0]=30
-    alarm[1]=59
-    image_index=1
+if (shot &amp;&amp; can_save &amp;&amp; instance_exists(oPlayer) &amp;&amp; grav == global.grav)
+{
+    savePlayer();
+    can_save = false;
+    alarm[0] = 30;
+    alarm[1] = 59;
+    image_index = 1;
 }
+
 </string>
           </argument>
         </arguments>

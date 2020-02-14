@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>count = 0
+            <string>count = 0;
 </string>
           </argument>
         </arguments>
@@ -48,10 +48,12 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if count == 0 {
-    count = 100
-    oRecordPlayer.djump = true
+            <string>if (count == 0)
+{
+    count = 100;
+    oRecordPlayer.djump = true;
 }
+
 </string>
           </argument>
         </arguments>
@@ -74,10 +76,12 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if count == 0 {
-    count = 100
-    oPlayer.djump = true
+            <string>if (count == 0)
+{
+    count = 100;
+    oPlayer.djump = true;
 }
+
 </string>
           </argument>
         </arguments>
@@ -100,12 +104,18 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if global.paused=false and global.recordingpaused=false{
-if count &gt; 0 count -= 1}
-if count == 0 image_alpha = 1
-else image_alpha = 0.1
+            <string>if (global.paused == false &amp;&amp; global.recordingpaused == false)
+{
+    if (count &gt; 0)
+        count -= 1;
+}
+if (count == 0)
+    image_alpha = 1;
+else
+    image_alpha = 0.1;
 
-draw_self()
+draw_self();
+
 </string>
           </argument>
         </arguments>

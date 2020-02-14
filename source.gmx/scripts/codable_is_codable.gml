@@ -1,11 +1,13 @@
-///codable_is_codable(instance)
-//Returns true if this instance is a codable object type, false otherwise
+/// codable_is_codable(instance)
+// Returns true if this instance is a codable object type, false otherwise
 
-//If this instance was dynamically created, do not allow the user to give it code
-if ds_list_find_index(global.dynamic_instance_list,argument0) > -1 return false
+// If this instance was dynamically created, do not allow the user to give it code 
+if (ds_list_find_index(global.dynamic_instance_list, argument0) > -1)
+    return false;
 
-//Otherwise, check to see if it's a codable type
-switch (argument0.object_index) {
+// Otherwise, check to see if it's a codable type 
+switch (argument0.object_index)
+{
     case oEditBlock:
     case oEditMiniBlock:
     case oPlatform:
@@ -19,7 +21,8 @@ switch (argument0.object_index) {
     case oMiniSpikeDown:
     case oApple:
     case oTrg:
-        return true
+        return true;
     default:
-        return false
+        return false;
 }
+

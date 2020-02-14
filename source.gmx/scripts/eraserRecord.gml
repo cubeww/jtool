@@ -1,3 +1,11 @@
-with oRecordPlayer {instance_destroy();}
-if instance_exists(oRecordPlayerCopy) { instance_destroy(oRecordPlayerCopy) }
+with (oRecordPlayer)
+{
+    instance_destroy();
+}
+if (instance_exists(oRecordPlayerCopy))
+{
+    with (oRecordPlayerCopy)
+        instance_destroy();
+}
 clearRecordList();
+

@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>jumpDurations_Create()
+            <string>jumpDurations_Create();
 </string>
           </argument>
         </arguments>
@@ -48,9 +48,13 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var choose_player = oPlayer
-if instance_exists(oRecordPlayer) {choose_player = oRecordPlayer}
-jumpDurations_EndStep(choose_player)
+            <string>var choose_player = oPlayer;
+if (instance_exists(oRecordPlayer))
+{
+    choose_player = oRecordPlayer;
+}
+jumpDurations_EndStep(choose_player);
+
 </string>
           </argument>
         </arguments>
@@ -73,15 +77,17 @@ jumpDurations_EndStep(choose_player)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if not global.showanalysis exit
+            <string>if (!global.showanalysis)
+    exit;
 
-var xo = 8
-var yo = 5
-var dy = 20
-var w = 136
-var h = 96
-drawButton(x,y,w,h,false)
-jumpDurations_Draw(x+xo,y+yo,dy)
+var xo = 8;
+var yo = 5;
+var dy = 20;
+var w = 136;
+var h = 96;
+drawButton(x, y, w, h, false);
+jumpDurations_Draw(x + xo, y + yo, dy);
+
 </string>
           </argument>
         </arguments>

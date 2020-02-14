@@ -6,26 +6,35 @@
    Save at current position using S.
 */
 
-with oRecordPlayer {
+with (oRecordPlayer)
+{
     var isOnBlock;
-    if( global.checkNudgeEarly ) {
+    if (global.checkNudgeEarly)
+    {
         isOnBlock = nudgeBlockCheck;
-    } else {
-        isOnBlock = place_meeting(x,y+grav,oBlock);
     }
-    if isOnBlock and not frozen {
-        if FA || FU and not place_meeting(x-1,y,oBlock) {
-            x -= 1
+    else
+    {
+        isOnBlock = place_meeting(x, y + grav, oBlock);
+    }
+    if (isOnBlock && !frozen)
+    {
+        if (FA || FU && !place_meeting(x - 1, y, oBlock))
+        {
+            x -= 1;
         }
-        if FD || FI and not place_meeting(x+1,y,oBlock) {
-            x += 1
+        if (FD || FI && !place_meeting(x + 1, y, oBlock))
+        {
+            x += 1;
         }
-        if FN and not place_meeting(x-1,y,oBlock) {
-            x -= .5
+        if (FN && !place_meeting(x - 1, y, oBlock))
+        {
+            x -= .5;
         }
-         if FM and not place_meeting(x+1,y,oBlock) {
-            x += .5
-         }
+        if (FM && !place_meeting(x + 1, y, oBlock))
+        {
+            x += .5;
+        }
     }
 }
 
@@ -57,4 +66,5 @@ if keyboard_check_pressed(ord('V')) and instance_exists(oPlayer) {
         oInputOverlay.textbox_label = '0.'
     }
 }
-*/
+*/ 
+

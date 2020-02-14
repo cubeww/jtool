@@ -25,9 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>event_inherited()
-image_speed=0
-codable_create()
+            <string>event_inherited();
+image_speed = 0;
+codable_create();
 </string>
           </argument>
         </arguments>
@@ -50,10 +50,13 @@ codable_create()
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>event_inherited()
-if global.paused=false and global.recordingpaused=false{
-image_index = floor(global.count/15) mod 2
-codable_step()}
+            <string>event_inherited();
+if (global.paused == false &amp;&amp; global.recordingpaused == false)
+{
+    image_index = floor(global.count / 15) mod 2;
+    codable_step();
+}
+
 </string>
           </argument>
         </arguments>
@@ -76,8 +79,9 @@ codable_step()}
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>event_inherited()
-codable_draw(false)
+            <string>event_inherited();
+codable_draw(false);
+
 </string>
           </argument>
         </arguments>

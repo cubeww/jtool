@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>death_count = 0
+            <string>death_count = 0;
 </string>
           </argument>
         </arguments>
@@ -48,19 +48,22 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if not global.showanalysis exit
+            <string>if (!global.showanalysis)
+    exit;
 
-var w = 136
-var h = 32
-drawButton(x,y,w,h,false)
-fontSetup(font_small, c_black, fa_left, fa_center, 1)
-draw_text(x+5, y+16, 'Deaths: '+string(death_count))
+var w = 136;
+var h = 32;
+drawButton(x, y, w, h, false);
+fontSetup(font_small, c_black, fa_left, fa_center, 1);
+draw_text(x + 5, y + 16, 'Deaths: ' + string(death_count));
 
-var buttons_active = global.state == globalstate_idle and not global.comboboxselected
-var xo = 92
-if menuButton(x+xo,y,w-xo,32,'Reset',buttons_active,false) {
-    death_count = 0
+var buttons_active = global.state == globalstate_idle &amp;&amp; !global.comboboxselected;
+var xo = 92;
+if (menuButton(x + xo, y, w - xo, 32, 'Reset', buttons_active, false))
+{
+    death_count = 0;
 }
+
 </string>
           </argument>
         </arguments>

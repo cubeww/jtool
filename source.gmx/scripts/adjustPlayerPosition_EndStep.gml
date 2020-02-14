@@ -6,68 +6,88 @@
    Save at current position using S.
 */
 
-with oPlayer {
+with (oPlayer)
+{
     var isOnBlock;
-    if( global.checkNudgeEarly ) {
+    if (global.checkNudgeEarly)
+    {
         isOnBlock = nudgeBlockCheck;
-    } else {
-        isOnBlock = place_meeting(x,y+global.grav,oBlock);
     }
-    if isOnBlock and not frozen {
-        if keyboard_check_pressed(ord('A')) || keyboard_check(ord("U")) and not place_meeting(x-1,y,oBlock) {
-            
-            x -= 1
+    else
+    {
+        isOnBlock = place_meeting(x, y + global.grav, oBlock);
+    }
+    if (isOnBlock && !frozen)
+    {
+        if (keyboard_check_pressed(ord('A')) || keyboard_check(ord("U")) && !place_meeting(x - 1, y, oBlock))
+        {
+            x -= 1;
         }
-        if keyboard_check_pressed(ord('D')) || keyboard_check(ord("I")) and not place_meeting(x+1,y,oBlock) {
-           /*if global.tasAD = true {
+        if (keyboard_check_pressed(ord('D')) || keyboard_check(ord("I")) && !place_meeting(x + 1, y, oBlock))
+        {
+            /* if global.tasAD = true {
             oPlayer.vspeed = -jump; 
-            oPlayer.djump = true}*/
-             x += 1
+            oPlayer.djump = true }*/
+            x += 1;
         }
-        if keyboard_check_pressed(ord('N')) and not place_meeting(x-1,y,oBlock) {
-            x -= .5
+        if (keyboard_check_pressed(ord('N')) && !place_meeting(x - 1, y, oBlock))
+        {
+            x -= .5;
         }
-         if keyboard_check_pressed(ord('M')) and not place_meeting(x+1,y,oBlock) {
-            x += .5
-         }
+        if (keyboard_check_pressed(ord('M')) && !place_meeting(x + 1, y, oBlock))
+        {
+            x += .5;
+        }
     }
 }
 
-if keyboard_check_pressed(ord('W')) and global.paused=false
-and mouse_x >= 0 and mouse_x < 800 and mouse_y >= 0 and mouse_y < 608 {
-    if not instance_exists(oPlayer) loadPlayer()
-    with oPlayer {
-        x = mouse_x
-        y = mouse_y
-        vspeed = 0
-        djump = true
+if (keyboard_check_pressed(ord('W')) && global.paused == false
+    && mouse_x >= 0 && mouse_x < 800 && mouse_y >= 0 && mouse_y < 608)
+{
+    if (!instance_exists(oPlayer))
+        loadPlayer();
+    with (oPlayer)
+    {
+        x = mouse_x;
+        y = mouse_y;
+        vspeed = 0;
+        djump = true;
     }
 }
 
-if (keyboard_check_pressed(ord('S')) and not keyboard_check(vk_control))
-and instance_exists(oPlayer) {
-    savePlayer()
-    audio_play_sound(sndShoot,0,false)
-    with oPlayer instance_create(x-17,y-23,oKeySaveParticle)
+if ((keyboard_check_pressed(ord('S')) && !keyboard_check(vk_control))
+    && instance_exists(oPlayer))
+{
+    savePlayer();
+    audio_play_sound(sndShoot, 0, false);
+    with (oPlayer)
+        instance_create(x - 17, y - 23, oKeySaveParticle);
 }
 
-if keyboard_check_pressed(ord('V')) and instance_exists(oPlayer) {
+if (keyboard_check_pressed(ord('V')) && instance_exists(oPlayer))
+{
     var onblock;
-    with oPlayer onblock = place_meeting(x,y+global.grav,oBlock)
-    if onblock {
-        inputOverlay(input_textbox,inputCallback_VAlign,
-            'Valign (was '+string(oPlayer.y-floor(oPlayer.y))+')')
-        oInputOverlay.textbox_label = '0.'
+    with (oPlayer)
+        onblock = place_meeting(x, y + global.grav, oBlock);
+    if (onblock)
+    {
+        inputOverlay(input_textbox, inputCallback_VAlign,
+            'Valign (was ' + string(oPlayer.y - floor(oPlayer.y)) + ')');
+        oInputOverlay.textbox_label = '0.';
     }
 }
-if keyboard_check_pressed(ord('H')) and instance_exists(oPlayer) {
+if (keyboard_check_pressed(ord('H')) && instance_exists(oPlayer))
+{
     var onblock;
-    with oPlayer onblock = place_meeting(x,y+global.grav,oBlock)
-    if onblock {
-        inputOverlay(input_textbox,inputCallback_HAlign,
-            'Halign (was '+string(oPlayer.x-floor(oPlayer.x))+')')
-        oInputOverlay.textbox_label = '0.'
+    with (oPlayer)
+        onblock = place_meeting(x, y + global.grav, oBlock);
+    if (onblock)
+    {
+        inputOverlay(input_textbox, inputCallback_HAlign,
+            'Halign (was ' + string(oPlayer.x - floor(oPlayer.x)) + ')');
+        oInputOverlay.textbox_label = '0.';
     }
 }
-global.tasAD = false
-global.adjustTAS = false
+global.tasAD = false;
+global.adjustTAS = false;
+

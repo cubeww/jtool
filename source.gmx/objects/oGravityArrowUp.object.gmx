@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if other.grav == 1 flipGravityRecord()
+            <string>if (other.grav == 1)
+    flipGravityRecord();
+
 </string>
           </argument>
         </arguments>
@@ -48,7 +50,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if global.grav == 1 flipGravity()
+            <string>if (global.grav == 1)
+    flipGravity();
+
 </string>
           </argument>
         </arguments>

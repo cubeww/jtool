@@ -25,8 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_alpha = global.bulletblockeralpha
-count = 1000
+            <string>image_alpha = global.bulletblockeralpha;
+count = 1000;
+
 </string>
           </argument>
         </arguments>
@@ -49,12 +50,13 @@ count = 1000
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_alpha = global.bulletblockeralpha
-count += 1
-fraction = 1-(count-10)/20
-fraction = clamp(fraction,0,1)
+            <string>image_alpha = global.bulletblockeralpha;
+count += 1;
+fraction = 1 - (count - 10) / 20;
+fraction = clamp(fraction, 0, 1);
 
-image_alpha += (1-global.bulletblockeralpha)*fraction
+image_alpha += (1 - global.bulletblockeralpha) * fraction;
+
 </string>
           </argument>
         </arguments>
@@ -77,8 +79,10 @@ image_alpha += (1-global.bulletblockeralpha)*fraction
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>with other instance_destroy()
-count = 0
+            <string>with (other)
+    instance_destroy();
+count = 0;
+
 </string>
           </argument>
         </arguments>

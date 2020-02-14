@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>selected = false
+            <string>selected = false;
 </string>
           </argument>
         </arguments>
@@ -48,61 +48,66 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var w = 112
-var h = 32
-var droph = 75
+            <string>var w = 112;
+var h = 32;
+var droph = 75;
+comboBoxButton(x, y, w, h, droph, 'Snap: ' + string(oEdit.snap), sMenuGrid);
 
-comboBoxButton(x,y,w,h,droph,'Snap: '+string(oEdit.snap),sMenuGrid)
-
-if selected {
-    drawButton(x,y+h-1,w,droph,false)
-    draw_set_color(global.color_button)
-    draw_line(x,y+h-1,x+w-2,y+h-1)
+if (selected)
+{
+    drawButton(x, y + h - 1, w, droph, false);
+    draw_set_color(global.color_button);
+    draw_line(x, y + h - 1, x + w - 2, y + h - 1);
 }
 
-var bx = x
-var by = y+h-1
-var bw = 38
-var bh = 38
-var dx = 37
-
-if selected and menuButton(bx,by,bw,bh,'32',true,false) {
-    oEdit.snap = 32
-    saveConfig()
-    selected = false
-    global.comboboxselected = false
+var bx = x;
+var by = y + h - 1;
+var bw = 38;
+var bh = 38;
+var dx = 37;
+if (selected &amp;&amp; menuButton(bx, by, bw, bh, '32', true, false))
+{
+    oEdit.snap = 32;
+    saveConfig();
+    selected = false;
+    global.comboboxselected = false;
 }
 
-bx += dx
-if selected and menuButton(bx,by,bw,bh,'16',true,false) {
-    oEdit.snap = 16
-    saveConfig()
-    selected = false
-    global.comboboxselected = false
+bx += dx;
+if (selected &amp;&amp; menuButton(bx, by, bw, bh, '16', true, false))
+{
+    oEdit.snap = 16;
+    saveConfig();
+    selected = false;
+    global.comboboxselected = false;
 }
 
-bx += dx
-if selected and menuButton(bx,by,bw,bh,'8',true,false) {
-    oEdit.snap = 8
-    saveConfig()
-    selected = false
-    global.comboboxselected = false
+bx += dx;
+if (selected &amp;&amp; menuButton(bx, by, bw, bh, '8', true, false))
+{
+    oEdit.snap = 8;
+    saveConfig();
+    selected = false;
+    global.comboboxselected = false;
 }
 
-by += dx
-bx -= dx*2
-if selected and menuButton(bx,by,bw,bh,'1',true,false) {
-    oEdit.snap = 1
-    saveConfig()
-    selected = false
-    global.comboboxselected = false
+by += dx;
+bx -= dx * 2;
+if (selected &amp;&amp; menuButton(bx, by, bw, bh, '1', true, false))
+{
+    oEdit.snap = 1;
+    saveConfig();
+    selected = false;
+    global.comboboxselected = false;
 }
 
-bx += dx
-if (selected and menuButton(bx,by,bw*2-1,bh,'other (G)',true,false))
-or (keyboard_check_pressed(ord('G')) and global.state != globalstate_input) {
-    inputOverlay(input_textbox,inputCallback_GridCustom,'Grid snap (was '+string(oEdit.snap)+')')
+bx += dx;
+if ((selected &amp;&amp; menuButton(bx, by, bw * 2 - 1, bh, 'other (G)', true, false))
+    || (keyboard_check_pressed(ord('G')) &amp;&amp; global.state != globalstate_input))
+{
+    inputOverlay(input_textbox, inputCallback_GridCustom, 'Grid snap (was ' + string(oEdit.snap) + ')');
 }
+
 </string>
           </argument>
         </arguments>

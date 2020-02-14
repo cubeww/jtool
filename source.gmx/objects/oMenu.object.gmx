@@ -25,20 +25,23 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>menu_height = 290//200
-x = 0
-y = -menu_height
-steps_in_menu = 0
-steps_out_of_menu = 0
-yspeed = 0
-escape_button_just_clicked = false
+            <string>menu_height = 220; // 200 
+x = 0;
+y = -menu_height;
+steps_in_menu = 0;
+steps_out_of_menu = 0;
+yspeed = 0;
+escape_button_just_clicked = false;
 
-global.stopX = -1
-   global.stopY = 0
-   global.stopgrav = 0
-   global.stopplayer_xscale = 0
+global.stopX = -1;
+global.stopY = 0;
+global.stopgrav = 0;
+global.stopplayer_xscale = 0;
 
 Background = sprite_add("Screenie.png", 0, false, true, 0, 0);
+
+cur_section = 0;
+
 </string>
           </argument>
         </arguments>
@@ -61,7 +64,7 @@ Background = sprite_add("Screenie.png", 0, false, true, 0, 0);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>continueRecordBegin()
+            <string>continueRecordBegin();
 </string>
           </argument>
         </arguments>
@@ -84,27 +87,33 @@ Background = sprite_add("Screenie.png", 0, false, true, 0, 0);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>steps_out_of_menu += 1
-if (keyboard_check_pressed(vk_escape) or escape_button_just_clicked)
-and global.state == globalstate_menu
-and steps_in_menu &gt; 0 {
-    global.state = globalstate_idle
-    steps_out_of_menu = 0
-    restoreZoom()
+            <string>steps_out_of_menu += 1;
+if ((keyboard_check_pressed(vk_escape) || escape_button_just_clicked)
+    &amp;&amp; global.state == globalstate_menu
+    &amp;&amp; steps_in_menu &gt; 0)
+{
+    global.state = globalstate_idle;
+    steps_out_of_menu = 0;
+    restoreZoom();
 }
 
-if global.state == globalstate_menu {
-    var dy = (0-y)*0.25
-    if dy &gt; 1 y = floor(y + dy)
-    steps_in_menu += 1
+if (global.state == globalstate_menu)
+{
+    var dy = (0 - y) * 0.25;
+    if (dy &gt; 1)
+        y = floor(y + dy);
+    steps_in_menu += 1;
 }
-else if global.state == globalstate_idle {
-    y += (-(menu_height+40)-y)*0.1
-    if y &lt; -menu_height y = -menu_height
-    steps_in_menu = -1
+else if (global.state == globalstate_idle)
+{
+    y += (-(menu_height + 40) - y) * 0.1;
+    if (y &lt; -menu_height)
+        y = -menu_height;
+    steps_in_menu = -1;
 }
 
-escape_button_just_clicked = false
+escape_button_just_clicked = false;
+
 </string>
           </argument>
         </arguments>
@@ -121,349 +130,977 @@ escape_button_just_clicked = false
         <exetype>2</exetype>
         <functionname></functionname>
         <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>// draw menu
+draw_sprite(sMenu, 0, 0, y - (sprite_get_height(sMenu) - menu_height));
+
+var buttons_enabled = global.state == globalstate_menu &amp;&amp; steps_in_menu &gt; 0;
+var w = 130;     // button width
+var h = 32;      // button height
+var dx = 140;    // horizontal spacing between the two buttons
+var dy = 40;     // vertical spacing between the two buttons
+var dx2 = 40;
+var xo = 20;     // x origin
+var yo = 10;     // section select y origin
+var yo2 = 60;    // normal y origin
+
+var xx = x + xo; // current x
+var yy = y + yo; // current y
+
+var sec = 0;
+
+// section select
+
+if (menuButtonToggle(xx, yy, w, h, true, false, '[ File ]', 'File', cur_section == sec))
+    cur_section = sec;
+
+xx += dx;
+sec += 1;
+if (menuButtonToggle(xx, yy, w, h, true, false, '[ Map ]', 'Map', cur_section == sec))
+    cur_section = sec;
+
+xx += dx;
+sec += 1;
+if (menuButtonToggle(xx, yy, w, h, true, false, '[ Player ]', 'Player', cur_section == sec))
+    cur_section = sec;
+
+xx += dx;
+sec += 1;
+if (menuButtonToggle(xx, yy, w, h, true, false, '[ View ]', 'View', cur_section == sec))
+    cur_section = sec;
+    
+xx += dx;
+sec += 1;
+if (menuButtonToggle(xx, yy, w, h, true, false, '[ Record ]', 'Record', cur_section == sec))
+    cur_section = sec;
+    
+xx += dx;
+sec += 1;
+if (menuButtonToggle(xx, yy, w, h, true, false, '[ Help ]', 'Help', cur_section == sec))
+    cur_section = sec;
+    
+// close menu 
+xx = 1056 - w - 8;
+yy = y + 12;
+if (menuButton(xx, yy, w, h, 'Close Menu (Esc)', buttons_enabled, false)
+    || (buttons_enabled &amp;&amp; mouse_y &gt; y + menu_height &amp;&amp; mouse_check_button_pressed(mb_left)))
+{
+    escape_button_just_clicked = true;
+}
+
+yy += dy;
+draw_line(-1, yy, 1056, yy);
+
+// sections
+sec = 0;
+
+// section: File
+if (cur_section == sec)
+{
+    xx = xo;
+    yy = y + yo2;
+    
+    // open map
+    var clicked = menuButton(xx, yy, w, h, 'Open Map', buttons_enabled, sMenuOpen);
+    var shortcut = keyboard_check(vk_control) &amp;&amp; keyboard_check_pressed(ord('O'));
+    if (clicked || shortcut)
+    {
+        if (!oEdit.undo_nochanges)
+        {
+            inputOverlay(input_yesno, inputCallback_LoadMap,
+                'Map has been modified. Save changes?');
+        }
+        else
+        {
+            global.input_bool = false;
+            global.input_cancel = false;
+            inputCallback_LoadMap();
+        }
+    }
+    
+    // save map
+    yy += dy;
+    var clicked = menuButton(xx, yy, w, h, 'Save Map', buttons_enabled, sMenuSave);
+    var shortcut = keyboard_check(vk_control) &amp;&amp; keyboard_check_pressed(ord('S'));
+    if (clicked || shortcut)
+    {
+        if (window_get_fullscreen())
+        {
+            window_set_fullscreen(false);
+            oWorld.alarm[0] = 1;
+            oWorld.alarm[1] = 2;
+        }
+        else
+            saveMap();
+    }
+    
+    // open RMJ 
+    yy += dy;
+    if (menuButton(xx, yy, w, h, 'Import RMJ Map', buttons_enabled, false))
+    {
+        if (!oEdit.undo_nochanges)
+        {
+            inputOverlay(input_yesno, inputCallback_LoadRMJMap,
+                'Map has been modified. Save changes?');
+        }
+        else
+        {
+            global.input_bool = false;
+            global.input_cancel = false;
+            inputCallback_LoadRMJMap();
+        }
+    }
+    
+    // save RMJ 
+    yy += dy;
+    if (menuButton(xx, yy, w, h, 'Export RMJ Map', buttons_enabled, false))
+    {
+        if (window_get_fullscreen())
+        {
+            window_set_fullscreen(false);
+            oWorld.alarm[0] = 1;
+            oWorld.alarm[4] = 2;
+        }
+        else
+            saveRMJMap();
+    }
+    
+    xx += dx;
+    yy = y + yo2;
+    
+    // export GM8
+    if (menuButton(xx, yy, w, h, 'Export GM8 Map', buttons_enabled, false))
+    {
+        saveGM8Map();
+    }
+    
+    // export GMS1
+    yy += dy;
+    if (menuButton(xx, yy, w, h, 'Export GMS1 Map', buttons_enabled, false))
+    {
+        saveGMS1Map();
+    }
+    
+    // export GMS2
+    yy += dy;
+    if (menuButton(xx, yy, w, h, 'Export GMS2 Map', buttons_enabled, false))
+    {
+        saveGMS2Map();
+    }
+}
+
+// section: Map
+sec += 1;
+if (cur_section == sec)
+{
+    xx = xo;
+    yy = y + yo2;
+    
+    // clear map 
+    if ((menuButton(xx, yy, w, h, 'Clear Map (F2)', buttons_enabled, sMenuClearMap)
+        || keyboard_check_pressed(vk_f2)) &amp;&amp; global.paused == false)
+    {
+        if (!oEdit.undo_nochanges)
+        {
+            inputOverlay(input_yesno, inputCallback_ClearMap,
+                'Map has been modified. Save changes?');
+        }
+        else
+        {
+            global.input_bool = false;
+            global.input_cancel = false;
+            inputCallback_ClearMap();
+        }
+    }
+    
+    // toggle backups 
+    yy += dy;
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, 0, 'Backups on', 'Backups off', global.backup))
+    {
+        global.backup = !global.backup;
+        saveConfig();
+    }
+    
+    // shift all objects 
+    var sw = 18;
+    var sh = 18;
+    var sdy = 12;
+    var sdx = 25;
+    
+    yy = y + yo2 + sdy;
+    xx += dx + sdx * 3;
+    if (menuButtonShift(xx, yy, sw, sh, '&gt;', buttons_enabled, 0))
+    {
+        with (oEdit)
+        {
+            clearUndoStack();
+        }
+        with (all)
+            if (objectInPalette(object_index))
+                x += oEdit.snap;
+    }
+    xx -= sdx;
+    yy += sdy;
+    if (menuButtonShift(xx, yy, sw, sh, 'v', buttons_enabled, 0))
+    {
+        with (oEdit)
+        {
+            clearUndoStack();
+        }
+        with (all)
+            if (objectInPalette(object_index))
+                y += oEdit.snap;
+    }
+    yy -= sdy * 2;
+    if (menuButtonShift(xx, yy, sw, sh, '^', buttons_enabled, 0))
+    {
+        with (oEdit)
+        {
+            clearUndoStack();
+        }
+        with (all)
+            if (objectInPalette(object_index))
+                y -= oEdit.snap;
+    }
+    xx -= sdx;
+    yy += sdy;
+    if (menuButtonShift(xx, yy, sw, sh, '&lt;', buttons_enabled, 0))
+    {
+        with (oEdit)
+        {
+            clearUndoStack();
+        }
+        with (all)
+            if (objectInPalette(object_index))
+                x -= oEdit.snap;
+    }
+}
+
+// section: Player
+sec += 1;
+if (cur_section == sec)
+{
+    xx = xo;
+    yy = y + yo2;
+    
+    // dotkid 
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuDotkid,
+        '[ Dotkid ]', 'Dotkid', global.dotkid))
+    {
+        global.dotkid = !global.dotkid;
+    }
+    
+    // save type 
+    yy += dy;
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuSavePoint,
+        'Z Saves', 'Shoot Saves', global.savetype))
+    {
+        global.savetype = !global.savetype;
+        saveConfig();
+    }
+    
+    // inf jump 
+    yy += dy;
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuInfJump,
+        '[ Inf Jump ]', 'Inf Jump', global.infinitejump))
+    {
+        global.infinitejump = !global.infinitejump;
+        if (global.infinitejump)
+            oJumpManyTimes.image_alpha = 2;
+    }
+    
+    // border type 
+    yy += dy;
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuBorderType,
+        'Solid Border', 'Death Border', global.bordertype))
+    {
+        global.bordertype = !global.bordertype;
+    }
+    
+    xx += dx;
+    yy = y + yo2;
+    
+    // outline 
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuDotOutline,
+        '[ Dot Outline ]', 'Dot Outline', global.dotkidoutline))
+    {
+        global.dotkidoutline = !global.dotkidoutline;
+        saveConfig();
+    }
+    
+    // death enabled
+    yy += dy;
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuDeath,
+        '[ Death ]', 'Death', global.deathEnabled))
+    {
+        global.deathEnabled = !global.deathEnabled;
+        saveConfig();
+    }
+    
+    // show hitbox 
+    yy += dy;
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuHitbox,
+        '[ Hitbox ]', 'Hitbox', global.showhitbox))
+    {
+        global.showhitbox += 1;
+        if (global.showhitbox &gt; 2)
+            global.showhitbox = 0;
+        saveConfig();
+    }
+    
+}
+
+// section: View
+sec += 1;
+if (cur_section == sec)
+{
+    xx = xo;
+    yy = y + yo2;
+    
+    // change skin 
+    var m = menuButtonTwoPart(xx, yy, w, h, 'Change Skin', buttons_enabled, sMenuSkin);
+    if (m != 0)
+    {
+        cycleSkin((m - 1) * 2 - 1);
+    }
+    
+    // grid draw 
+    yy += dy;
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuGrid,
+        'Grid: ' + string(global.grid_draw), 'Grid: off', global.grid_draw != 0))
+    {
+        switch (global.grid_draw)
+        {
+            case 0:
+                global.grid_draw = 32;
+                break;
+            case 32:
+                global.grid_draw = 16;
+                break;
+            case 16:
+                global.grid_draw = 8;
+                break;
+            case 8:
+                global.grid_draw = 4;
+                break;
+            case 4:
+                global.grid_draw = 2;
+                break;
+            case 2:
+                global.grid_draw = 0;
+                break;
+            default:
+                global.grid_draw = 0;
+                break;
+        }
+        oDrawGrid.needToRedrawSurf = true;
+        saveConfig();
+    }
+    
+    // toggle mouse coords 
+    yy += dy;
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuCoords,
+        '[ Coordinates ]', 'Coordinates', global.mousecoords))
+    {
+        global.mousecoords = !global.mousecoords;
+        saveConfig();
+    }
+    
+    // depth 
+    yy += dy;
+    if (menuButton(xx, yy, w, h, 'Depth Order', buttons_enabled, sMenuDepth))
+    {
+        inputOverlay(input_depth, false, '');
+    }
+    
+    xx += dx;
+    yy = y + yo2;
+    
+    // water lock 
+    var waterlock_spr = sMenuWaterLock2;
+    if (global.waterlocked)
+        waterlock_spr = sMenuWaterLock;
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, waterlock_spr, '[ Lock Water ]', 'Lock Water', global.waterlocked))
+    {
+        global.waterlocked = !global.waterlocked;
+    }
+    
+    // fullscreen 
+    yy += dy;
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuFullscreen, '[ Fullscreen ]', 'Fullscreen', window_get_fullscreen())
+        || (keyboard_check_pressed(vk_f4) &amp;&amp; !keyboard_check_direct(vk_alt)))
+    {
+        window_set_fullscreen(!window_get_fullscreen());
+        oWorld.alarm[0] = 1;
+        completelyResetZoom();
+        saveConfig();
+    }
+    
+    // hide sidebar 
+    yy += dy;
+    var sidebar_spr = sMenuSidebar;
+    if (global.hidesidebar)
+        sidebar_spr = sMenuSidebar2;
+    if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sidebar_spr,
+        'Show Sidebar', 'Hide Sidebar', global.hidesidebar))
+    {
+        global.hidesidebar = !global.hidesidebar;
+        saveConfig();
+    }
+    
+    // window opacity 
+    yy += dy;
+    if (menuButton(xx, yy, w, h, 'Opacity', buttons_enabled, sMenuOpacity))
+    {
+        inputOverlay(input_textbox, inputCallback_Opacity, 'Window alpha (was ' + string(global.window_alpha) + ')');
+    }
+}
+
+// section: Record
+sec += 1;
+if (cur_section == sec)
+{
+    xx = xo;
+    yy = y + yo2;
+    
+    // start record 
+    if (menuButton(xx, yy, w, h, 'Record', buttons_enabled, sMenuRecord))
+    {
+        global.PlayerFrameCounter = 0;
+        startRecord();
+        escape_button_just_clicked = true;
+    }
+    
+    // continue record 
+    yy += dy;
+    if (menuButton(xx, yy, w, h, 'Continue', buttons_enabled, sMenuContinue))
+    {
+        escape_button_just_clicked = true;
+        if (global.paused == false)
+        {
+            continueRecordAskName();
+        }
+    }
+    
+    // stop record 
+    yy += dy;
+    if (menuButton(xx, yy, w, h, 'Stop', buttons_enabled, sMenuStop))
+    {
+        global.savecount = 0;
+        global.SavedPlayerFrameCounter = global.PlayerFrameCounter;
+        if (instance_exists(oPlayer))
+        {
+            global.stopX = oPlayer.x;
+            global.stopY = oPlayer.y;
+            global.stopgrav = global.recordGrav;
+            global.stopplayer_xscale = global.player_xscale;
+            global.stopVspeed = oPlayer.vspeed;
+            global.stopDjump = oPlayer.djump;
+        }
+        else if (global.paused)
+        {
+            global.stopX = global.pausedX;
+            global.stopY = global.pausedY;
+            global.stopgrav = global.pausedgrav;
+            global.stopplayer_xscale = global.pausedplayer_xscale;
+            global.stopVspeed = global.pausedVspeed;
+            global.stopDjump = global.pausedDjump;
+        }
+        
+        playRecord();
+        escape_button_just_clicked = true;
+    }
+    
+    // eraser record
+    yy += dy;
+    if (menuButton(xx, yy, w, h, 'Eraser', buttons_enabled, sMenuEraser))
+    {
+        eraserRecord();
+        global.record = 0;
+        global.FrameCounterOn = false;
+        global.PlayerFrameCounter = 0;
+    }
+}
+
+// section: Help
+sec += 1;
+if (cur_section == sec)
+{
+    xx = xo;
+    yy = y + yo2;
+    
+    // about
+    if (menuButton(xx, yy, w, h, 'About', buttons_enabled, false))
+    {
+        inputOverlay(input_about, false, '');
+    }
+    
+    // github
+    yy += dy;
+    if (menuButton(xx, yy, w, h, 'Github', buttons_enabled, false))
+    {
+        url_open('https://github.com/patrickgh3/jtool');
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
         <whoName>other</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_sprite(sMenu,0,0,y-(sprite_get_height(sMenu)-menu_height))
+            <string>/// OLD MENU
+/*
+draw_sprite(sMenu, 0, 0, y - (sprite_get_height(sMenu) - menu_height));
 
-var buttons_enabled = global.state == globalstate_menu and steps_in_menu &gt; 0
-var w = 130
-var h = 32
-var dx = 140
-var dy = 40
-var dx2 = 40
-var xo = 20
-var yo = 50
+var buttons_enabled = global.state == globalstate_menu &amp;&amp; steps_in_menu &gt; 0;
+var w = 130;
+var h = 32;
+var dx = 140;
+var dy = 40;
+var dx2 = 40;
+var xo = 20;
+var yo = 50;
+var xx = x + xo;
+var yy = y + yo;
+menuSection(xx, yy, 'File', false);
 
-var xx = x+xo
-var yy = y+yo
-menuSection(xx,yy,'File',false)
-
-// open map
-var clicked = menuButton(xx,yy,w,h,'Open Map',buttons_enabled,sMenuOpen)
-var shortcut = keyboard_check(vk_control) and keyboard_check_pressed(ord('O'))
-if clicked or shortcut {
-    if not oEdit.undo_nochanges {
-        inputOverlay(input_yesno,inputCallback_LoadMap,
-        'Map has been modified. Save changes?')
+// open map 
+var clicked = menuButton(xx, yy, w, h, 'Open Map', buttons_enabled, sMenuOpen);
+var shortcut = keyboard_check(vk_control) &amp;&amp; keyboard_check_pressed(ord('O'));
+if (clicked || shortcut)
+{
+    if (!oEdit.undo_nochanges)
+    {
+        inputOverlay(input_yesno, inputCallback_LoadMap,
+            'Map has been modified. Save changes?');
     }
-    else {
-        global.input_bool = false
-        global.input_cancel = false
-        inputCallback_LoadMap()
-    }
-}
-
-// save map
-yy += dy
-var clicked = menuButton(xx,yy,w,h,'Save Map',buttons_enabled,sMenuSave)
-var shortcut = keyboard_check(vk_control) and keyboard_check_pressed(ord('S'))
-if clicked or shortcut {
-    if window_get_fullscreen() {
-        window_set_fullscreen(false)
-        oWorld.alarm[0] = 1
-        oWorld.alarm[1] = 2
-    }
-    else saveMap()
-}
-
-// open RMJ
-yy += dy
-if menuButton(xx,yy,w,h,'Import RMJ Map',buttons_enabled,false) {
-    if not oEdit.undo_nochanges {
-        inputOverlay(input_yesno,inputCallback_LoadRMJMap,
-        'Map has been modified. Save changes?')
-    }
-    else {
-        global.input_bool = false
-        global.input_cancel = false
-        inputCallback_LoadRMJMap()
+    else
+    {
+        global.input_bool = false;
+        global.input_cancel = false;
+        inputCallback_LoadMap();
     }
 }
 
-//save RMJ
-yy += dy
-if menuButton(xx,yy,w,h,'Export RMJ Map',buttons_enabled,false) {
-    if window_get_fullscreen() {
-        window_set_fullscreen(false)
-        oWorld.alarm[0] = 1
-        oWorld.alarm[4] = 2
+// save map 
+yy += dy;
+var clicked = menuButton(xx, yy, w, h, 'Save Map', buttons_enabled, sMenuSave);
+var shortcut = keyboard_check(vk_control) &amp;&amp; keyboard_check_pressed(ord('S'));
+if (clicked || shortcut)
+{
+    if (window_get_fullscreen())
+    {
+        window_set_fullscreen(false);
+        oWorld.alarm[0] = 1;
+        oWorld.alarm[1] = 2;
     }
-    else saveRMJMap()
-}
-//save REC
-yy += dy
-if global.paused = false and menuButton(xx,yy,w,h,'Save Record',buttons_enabled,false) {
-    saveRecordAskName()
-}
-//load REC
-yy += dy
-if global.paused = false and menuButton(xx,yy,w,h,'Load Record',buttons_enabled,false) {
-    loadRecordAskName()
+    else
+        saveMap();
 }
 
-xx += dx+dx2
-yy = y+yo
-menuSection(xx,yy,'Map',true)
-
-// dotkid
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,sMenuDotkid,
-'[ Dotkid ]','Dotkid',global.dotkid) {
-    global.dotkid = not global.dotkid
-}
-
-// save type
-yy += dy
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,sMenuSavePoint,
-'Z Saves','Shoot Saves',global.savetype) {
-    global.savetype = not global.savetype
-    saveConfig()
-}
-
-// inf jump
-yy += dy
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,sMenuInfJump,
-'[ Inf Jump ]','Inf Jump',global.infinitejump) {
-    global.infinitejump = not global.infinitejump
-    if global.infinitejump oJumpManyTimes.image_alpha = 2
-}
-
-// border type
-yy += dy
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,sMenuBorderType,
-'Solid Border','Death Border',global.bordertype) {
-    global.bordertype = not global.bordertype
-}
-
-xx += dx+dx2
-yy = y+yo
-menuSection(xx,yy,'Preferences',true)
-
-// death enabled
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,sMenuDeath,
-'[ Death ]','Death',global.deathEnabled) {
-    global.deathEnabled = not global.deathEnabled
-    saveConfig()
-}
-
-// grid draw
-yy += dy
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,sMenuGrid,
-'Grid: '+string(global.grid_draw),'Grid: off',global.grid_draw != 0) {
-    switch global.grid_draw {
-        case 0: global.grid_draw = 32 break
-        case 32: global.grid_draw = 16 break
-        case 16: global.grid_draw = 8 break
-        case 8: global.grid_draw = 4 break
-        case 4: global.grid_draw = 2 break
-        case 2: global.grid_draw = 0 break
-        default: global.grid_draw = 0 break
+// open RMJ 
+yy += dy;
+if (menuButton(xx, yy, w, h, 'Import RMJ Map', buttons_enabled, false))
+{
+    if (!oEdit.undo_nochanges)
+    {
+        inputOverlay(input_yesno, inputCallback_LoadRMJMap,
+            'Map has been modified. Save changes?');
     }
-    oDrawGrid.needToRedrawSurf = true
-    saveConfig()
+    else
+    {
+        global.input_bool = false;
+        global.input_cancel = false;
+        inputCallback_LoadRMJMap();
+    }
 }
 
-// show hitbox
-yy += dy
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,sMenuHitbox,
-'[ Hitbox ]','Hitbox',global.showhitbox) {
-    global.showhitbox += 1
-    if global.showhitbox &gt; 2 global.showhitbox = 0
-    saveConfig()
+// save RMJ 
+yy += dy;
+if (menuButton(xx, yy, w, h, 'Export RMJ Map', buttons_enabled, false))
+{
+    if (window_get_fullscreen())
+    {
+        window_set_fullscreen(false);
+        oWorld.alarm[0] = 1;
+        oWorld.alarm[4] = 2;
+    }
+    else
+        saveRMJMap();
 }
 
-// outline
-yy += dy
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,sMenuDotOutline,
-'[ Dot Outline ]','Dot Outline',global.dotkidoutline) {
-    global.dotkidoutline = not global.dotkidoutline
-    saveConfig()
+// save REC 
+yy += dy;
+if (global.paused == false &amp;&amp; menuButton(xx, yy, w, h, 'Save Record', buttons_enabled, false))
+{
+    saveRecordAskName();
 }
 
-// start record
-yy += dy
-if menuButton(xx,yy,w,h,'Record',buttons_enabled,sMenuRecord) {
-   global.PlayerFrameCounter = 0
+// load REC 
+yy += dy;
+if (global.paused == false &amp;&amp; menuButton(xx, yy, w, h, 'Load Record', buttons_enabled, false))
+{
+    loadRecordAskName();
+}
+
+xx += dx + dx2;
+yy = y + yo;
+menuSection(xx, yy, 'Map', true);
+
+// dotkid 
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuDotkid,
+    '[ Dotkid ]', 'Dotkid', global.dotkid))
+{
+    global.dotkid = !global.dotkid;
+}
+
+// save type 
+yy += dy;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuSavePoint,
+    'Z Saves', 'Shoot Saves', global.savetype))
+{
+    global.savetype = !global.savetype;
+    saveConfig();
+}
+
+// inf jump 
+yy += dy;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuInfJump,
+    '[ Inf Jump ]', 'Inf Jump', global.infinitejump))
+{
+    global.infinitejump = !global.infinitejump;
+    if (global.infinitejump)
+        oJumpManyTimes.image_alpha = 2;
+}
+
+// border type 
+yy += dy;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuBorderType,
+    'Solid Border', 'Death Border', global.bordertype))
+{
+    global.bordertype = !global.bordertype;
+}
+
+xx += dx + dx2;
+yy = y + yo;
+menuSection(xx, yy, 'Preferences', true);
+
+// death enabled 
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuDeath,
+    '[ Death ]', 'Death', global.deathEnabled))
+{
+    global.deathEnabled = !global.deathEnabled;
+    saveConfig();
+}
+
+// grid draw 
+yy += dy;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuGrid,
+    'Grid: ' + string(global.grid_draw), 'Grid: off', global.grid_draw != 0))
+{
+    switch (global.grid_draw)
+    {
+        case 0:
+            global.grid_draw = 32;
+            break;
+        case 32:
+            global.grid_draw = 16;
+            break;
+        case 16:
+            global.grid_draw = 8;
+            break;
+        case 8:
+            global.grid_draw = 4;
+            break;
+        case 4:
+            global.grid_draw = 2;
+            break;
+        case 2:
+            global.grid_draw = 0;
+            break;
+        default:
+            global.grid_draw = 0;
+            break;
+    }
+    oDrawGrid.needToRedrawSurf = true;
+    saveConfig();
+}
+
+// show hitbox 
+yy += dy;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuHitbox,
+    '[ Hitbox ]', 'Hitbox', global.showhitbox))
+{
+    global.showhitbox += 1;
+    if (global.showhitbox &gt; 2)
+        global.showhitbox = 0;
+    saveConfig();
+}
+
+// outline 
+yy += dy;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuDotOutline,
+    '[ Dot Outline ]', 'Dot Outline', global.dotkidoutline))
+{
+    global.dotkidoutline = !global.dotkidoutline;
+    saveConfig();
+}
+
+// start record 
+yy += dy;
+if (menuButton(xx, yy, w, h, 'Record', buttons_enabled, sMenuRecord))
+{
+    global.PlayerFrameCounter = 0;
     startRecord();
     escape_button_just_clicked = true;
 }
 
-//continue record
-yy +=dy
-if menuButton(xx,yy,w,h,'Continue',buttons_enabled,sMenuContinue) {
+// continue record 
+yy += dy;
+if (menuButton(xx, yy, w, h, 'Continue', buttons_enabled, sMenuContinue))
+{
     escape_button_just_clicked = true;
-    if global.paused = false {
-    continueRecordAskName() }
+    if (global.paused == false)
+    {
+        continueRecordAskName();
+    }
 }
 
 
-// change skin
-xx += dx
-yy = y+yo
-var m = menuButtonTwoPart(xx,yy,w,h,'Change Skin',buttons_enabled,sMenuSkin)
-if m != 0 {
-    cycleSkin((m-1)*2-1)
+// change skin 
+xx += dx;
+yy = y + yo;
+var m = menuButtonTwoPart(xx, yy, w, h, 'Change Skin', buttons_enabled, sMenuSkin);
+if (m != 0)
+{
+    cycleSkin((m - 1) * 2 - 1);
 }
 
-// toggle mouse coords
-yy += dy
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,sMenuCoords,
-'[ Coordinates ]','Coordinates',global.mousecoords) {
-    global.mousecoords = not global.mousecoords
-    saveConfig()
+// toggle mouse coords 
+yy += dy;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuCoords,
+    '[ Coordinates ]', 'Coordinates', global.mousecoords))
+{
+    global.mousecoords = !global.mousecoords;
+    saveConfig();
 }
 
-// fullscreen
-yy += dy
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,sMenuFullscreen,'[ Fullscreen ]','Fullscreen',window_get_fullscreen())
-or (keyboard_check_pressed(vk_f4) and not keyboard_check_direct(vk_alt)) {
-    window_set_fullscreen(not window_get_fullscreen())
-    oWorld.alarm[0]=1
-    completelyResetZoom()
-    saveConfig()
+// fullscreen 
+yy += dy;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sMenuFullscreen, '[ Fullscreen ]', 'Fullscreen', window_get_fullscreen())
+    || (keyboard_check_pressed(vk_f4) &amp;&amp; !keyboard_check_direct(vk_alt)))
+{
+    window_set_fullscreen(!window_get_fullscreen());
+    oWorld.alarm[0] = 1;
+    completelyResetZoom();
+    saveConfig();
 }
 
-// hide sidebar
-yy += dy
-var sidebar_spr = sMenuSidebar
-if global.hidesidebar sidebar_spr = sMenuSidebar2
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,sidebar_spr,
-'Show Sidebar','Hide Sidebar',global.hidesidebar) {
-    global.hidesidebar = not global.hidesidebar
-    saveConfig()
+// hide sidebar 
+yy += dy;
+var sidebar_spr = sMenuSidebar;
+if (global.hidesidebar)
+    sidebar_spr = sMenuSidebar2;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, sidebar_spr,
+    'Show Sidebar', 'Hide Sidebar', global.hidesidebar))
+{
+    global.hidesidebar = !global.hidesidebar;
+    saveConfig();
 }
 
-// stop record
-yy += dy
-if menuButton(xx,yy,w,h,'Stop',buttons_enabled,sMenuStop) {
-   global.savecount = 0
-   global.SavedPlayerFrameCounter = global.PlayerFrameCounter
-   if instance_exists(oPlayer) {
-   global.stopX = oPlayer.x
-   global.stopY = oPlayer.y
-   global.stopgrav = global.recordGrav
-   global.stopplayer_xscale = global.player_xscale
-   global.stopVspeed = oPlayer.vspeed
-   global.stopDjump = oPlayer.djump }
-   else if global.paused { 
-   
-   global.stopX = global.pausedX
-   global.stopY = global.pausedY
-   global.stopgrav = global.pausedgrav
-   global.stopplayer_xscale = global.pausedplayer_xscale
-   global.stopVspeed = global.pausedVspeed
-   global.stopDjump = global.pausedDjump }
-   
+// stop record 
+yy += dy;
+if (menuButton(xx, yy, w, h, 'Stop', buttons_enabled, sMenuStop))
+{
+    global.savecount = 0;
+    global.SavedPlayerFrameCounter = global.PlayerFrameCounter;
+    if (instance_exists(oPlayer))
+    {
+        global.stopX = oPlayer.x;
+        global.stopY = oPlayer.y;
+        global.stopgrav = global.recordGrav;
+        global.stopplayer_xscale = global.player_xscale;
+        global.stopVspeed = oPlayer.vspeed;
+        global.stopDjump = oPlayer.djump;
+    }
+    else if (global.paused)
+    {
+        global.stopX = global.pausedX;
+        global.stopY = global.pausedY;
+        global.stopgrav = global.pausedgrav;
+        global.stopplayer_xscale = global.pausedplayer_xscale;
+        global.stopVspeed = global.pausedVspeed;
+        global.stopDjump = global.pausedDjump;
+    }
+    
     playRecord();
     escape_button_just_clicked = true;
 }
 
-
-// depth
-xx += dx
-yy = y+yo
-if menuButton(xx,yy,w,h,'Depth Order',buttons_enabled,sMenuDepth) {
-    inputOverlay(input_depth, false, '')
+// window opacity 
+yy += dy;
+if (menuButton(xx, yy, w, h, 'Opacity', buttons_enabled, sMenuOpacity))
+{
+    inputOverlay(input_textbox, inputCallback_Opacity, 'Window alpha (was ' + string(global.window_alpha) + ')');
 }
 
-// water lock
-yy += dy
-var waterlock_spr = sMenuWaterLock2
-if global.waterlocked waterlock_spr = sMenuWaterLock
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,waterlock_spr,'[ Lock Water ]','Lock Water',global.waterlocked) {
-    global.waterlocked = not global.waterlocked
+
+// depth 
+xx += dx;
+yy = y + yo;
+if (menuButton(xx, yy, w, h, 'Depth Order', buttons_enabled, sMenuDepth))
+{
+    inputOverlay(input_depth, false, '');
 }
 
-// clear map
-yy += dy
-if (menuButton(xx,yy,w,h,'Clear Map (F2)',buttons_enabled,sMenuClearMap)
-or keyboard_check_pressed(vk_f2)) and global.paused=false {
-    if not oEdit.undo_nochanges {
-        inputOverlay(input_yesno,inputCallback_ClearMap,
-        'Map has been modified. Save changes?')
+// water lock 
+yy += dy;
+var waterlock_spr = sMenuWaterLock2;
+if (global.waterlocked)
+    waterlock_spr = sMenuWaterLock;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, waterlock_spr, '[ Lock Water ]', 'Lock Water', global.waterlocked))
+{
+    global.waterlocked = !global.waterlocked;
+}
+
+// clear map 
+yy += dy;
+if ((menuButton(xx, yy, w, h, 'Clear Map (F2)', buttons_enabled, sMenuClearMap)
+    || keyboard_check_pressed(vk_f2)) &amp;&amp; global.paused == false)
+{
+    if (!oEdit.undo_nochanges)
+    {
+        inputOverlay(input_yesno, inputCallback_ClearMap,
+            'Map has been modified. Save changes?');
     }
-    else {
-        global.input_bool = false
-        global.input_cancel = false
-        inputCallback_ClearMap()
+    else
+    {
+        global.input_bool = false;
+        global.input_cancel = false;
+        inputCallback_ClearMap();
     }
 }
 
-// toggle backups
-yy += dy
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,0,'Backups on','Backups off',global.backup) {
-    global.backup = not global.backup
-    saveConfig()
+// toggle backups 
+yy += dy;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, 0, 'Backups on', 'Backups off', global.backup))
+{
+    global.backup = !global.backup;
+    saveConfig();
 }
 
-yy += dy
-if menuButton(xx,yy,w,h,'Eraser',buttons_enabled,sMenuEraser) {
+yy += dy;
+if (menuButton(xx, yy, w, h, 'Eraser', buttons_enabled, sMenuEraser))
+{
     eraserRecord();
-    global.record = 0
-    global.FrameCounterOn = false
-    global.PlayerFrameCounter = 0
+    global.record = 0;
+    global.FrameCounterOn = false;
+    global.PlayerFrameCounter = 0;
 }
 
-// toggle update check
-xx += dx
-if menuButtonToggle(xx,yy,w,h,buttons_enabled,0,'Update check on','Update check off',global.checkupdates) {
-    global.checkupdates = not global.checkupdates
-    saveConfig()
+// toggle update check 
+xx += dx;
+if (menuButtonToggle(xx, yy, w, h, buttons_enabled, 0, 'Update check on', 'Update check off', global.checkupdates))
+{
+    global.checkupdates = !global.checkupdates;
+    saveConfig();
 }
 
-// shift all objects
+// shift all objects 
 var sw = 18;
 var sh = 18;
 var sdy = 12;
 var sdx = 25;
-yy -= dy-6
+yy -= dy - 6;
 
-xx += sdx*2
-if menuButtonShift(xx, yy, sw, sh, '&gt;', buttons_enabled, 0) {
-    with( oEdit ) { clearUndoStack(); }
-    with all if objectInPalette(object_index) x += oEdit.snap;
+xx += sdx * 2;
+if (menuButtonShift(xx, yy, sw, sh, '&gt;', buttons_enabled, 0))
+{
+    with (oEdit)
+    {
+        clearUndoStack();
+    }
+    with (all)
+        if (objectInPalette(object_index))
+            x += oEdit.snap;
 }
-xx -= sdx
-yy += sdy
-if menuButtonShift(xx, yy, sw, sh, 'v', buttons_enabled, 0) {
-    with( oEdit ) { clearUndoStack(); }
-    with all if objectInPalette(object_index) y += oEdit.snap
+xx -= sdx;
+yy += sdy;
+if (menuButtonShift(xx, yy, sw, sh, 'v', buttons_enabled, 0))
+{
+    with (oEdit)
+    {
+        clearUndoStack();
+    }
+    with (all)
+        if (objectInPalette(object_index))
+            y += oEdit.snap;
 }
-yy -= sdy*2
-if menuButtonShift(xx, yy, sw, sh, '^', buttons_enabled, 0) {
-    with( oEdit ) { clearUndoStack(); }
-    with all if objectInPalette(object_index) y -= oEdit.snap
+yy -= sdy * 2;
+if (menuButtonShift(xx, yy, sw, sh, '^', buttons_enabled, 0))
+{
+    with (oEdit)
+    {
+        clearUndoStack();
+    }
+    with (all)
+        if (objectInPalette(object_index))
+            y -= oEdit.snap;
 }
-xx -= sdx
-yy += sdy
-if menuButtonShift(xx, yy, sw, sh, '&lt;', buttons_enabled, 0) {
-    with( oEdit ) { clearUndoStack(); }
-    with all if objectInPalette(object_index) x -= oEdit.snap
+xx -= sdx;
+yy += sdy;
+if (menuButtonShift(xx, yy, sw, sh, '&lt;', buttons_enabled, 0))
+{
+    with (oEdit)
+    {
+        clearUndoStack();
+    }
+    with (all)
+        if (objectInPalette(object_index))
+            x -= oEdit.snap;
 }
 
-// close menu
-xx = 1056-w-8
-yy = y+12
-if menuButton(xx,yy,w,h,'Close Menu (Esc)',buttons_enabled,false) 
-or (buttons_enabled and mouse_y &gt; y+menu_height and mouse_check_button_pressed(mb_left)) {
-    escape_button_just_clicked = true
+// close menu 
+xx = 1056 - w - 8;
+yy = y + 12;
+if (menuButton(xx, yy, w, h, 'Close Menu (Esc)', buttons_enabled, false)
+    || (buttons_enabled &amp;&amp; mouse_y &gt; y + menu_height &amp;&amp; mouse_check_button_pressed(mb_left)))
+{
+    escape_button_just_clicked = true;
 }
 
-// about
-yy += dy
-if menuButton(xx,yy,w,h,'About',buttons_enabled,false) {
-    inputOverlay(input_about,false,'')
+// about 
+yy += dy;
+if (menuButton(xx, yy, w, h, 'About', buttons_enabled, false))
+{
+    inputOverlay(input_about, false, '');
 }
 
-// game end
-yy += dy
-if menuButton(xx,yy,w,h,'Quit',buttons_enabled,false) {
-    exitPressed()
+// game end 
+yy += dy;
+if (menuButton(xx, yy, w, h, 'Quit', buttons_enabled, false))
+{
+    exitPressed();
 }
-
 
 </string>
           </argument>
